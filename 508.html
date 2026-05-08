@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>空間美學設計師 | 個人作品集網站</title>
+    <!-- 引入 Google Fonts: Noto Sans TC -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- 引入 Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <!-- 引入 Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    
+    <style>
+        :root {
+            --gold-color: #b89a67;
+            --gold-hover: #9a7f52;
+            --dark-bg: #1a1a1a;
+            --light-bg: #f8f9fa;
+            --text-main: #333333;
+            --transition-base: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        html { scroll-behavior: smooth; }
+        body { 
+            font-family: 'Noto Sans TC', sans-serif; 
+            color: var(--text-main);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        /* 優雅色調與按鈕 */
+        .text-gold { color: var(--gold-color); }
+        .bg-dark-design { background-color: var(--dark-bg); }
+        .bg-gold { background-color: var(--gold-color); }
+        
+        .btn-primary { 
+            background-color: var(--gold-color); 
+            border-color: var(--gold-color);
+            padding: 12px 30px;
+            font-weight: 500;
+            transition: var(--transition-base);
+            border-radius: 0;
+        }
+        .btn-primary:hover { 
+            background-color: var(--gold-hover); 
+            border-color: var(--gold-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(184, 154, 103, 0.3);
+        }
+
+        .btn-outline-dark {
+            border-radius: 0;
+            padding: 12px 30px;
+            transition: var(--transition-base);
+        }
+
+        /* 導航欄優化 */
+        .navbar {
+            padding: 20px 0;
+            transition: var(--transition-base);
+        }
+        .navbar.scrolled {
+            padding: 12px 0;
+            background-color: rgba(26, 26, 26, 0.95) !important;
+            backdrop-filter: blur(10px);
+        }
+        .nav-link { 
+            font-weight: 400; 
+            letter-spacing: 2px;
+            margin-left: 20px;
+            position: relative;
+            color: rgba(255,255,255,0.8) !important;
+        }
+        .navbar.scrolled .nav-link {
+            color: white !important;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--gold-color);
+            transition: width 0.3s;
+        }
+        .nav-link:hover::after { width: 100%; }
+
+        /* 區塊間距 */
+        section { padding: 100px 0; }
+        
+        /* 首頁視覺區 */
+        .hero-section {
+            background: linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)), 
+                        url('https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+        }
+
+        /* 作品集卡片 */
+        .portfolio-card {
+            border: none;
+            background: none;
+            transition: var(--transition-base);
+            cursor: pointer;
+        }
+        .portfolio-img-wrapper {
+            overflow: hidden;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .portfolio-card img {
+            transition: transform 0.8s ease;
+            object-fit: cover;
+            height: 400px;
+            width: 100%;
+        }
+        .portfolio-card:hover img {
+            transform: scale(1.05);
+        }
+        .portfolio-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: opacity 0.4s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .portfolio-card:hover .portfolio-overlay { opacity: 1; }
+
+        /* 進度條樣式 */
+        .progress { border-radius: 0; background-color: #444; overflow: visible; }
+        .progress-bar { transition: width 1.5s ease-in-out; position: relative; }
+
+        /* 聯絡表單 */
+        .form-control {
+            border-radius: 0;
+            border: 1px solid #ddd;
+            padding: 12px;
+            margin-bottom: 20px;
+        }
+        .form-control:focus {
+            border-color: var(--gold-color);
+            box-shadow: none;
+        }
+
+        /* 動畫類別 */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hover-lift {
+            transition: transform 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-10px);
+            border-color: var(--gold-color) !important;
+        }
+
+        @media (max-width: 768px) {
+            .display-3 { font-size: 2.5rem; }
+            section { padding: 60px 0; }
+            .portfolio-card img { height: 300px; }
+            .navbar { background-color: var(--dark-bg) !important; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 導航欄 -->
+    <nav id="mainNav" class="navbar navbar-expand-lg navbar-dark bg-transparent fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#home" style="letter-spacing: 4px;">DESIGN STUDIO</a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+                <span class="bi bi-list fs-1 text-white"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navContent">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#home">首頁</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">理念</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#portfolio">作品</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#skills">專業</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">預約</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 首頁視覺區 -->
+    <header id="home" class="hero-section d-flex align-items-center">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-7 reveal active">
+                    <h6 class="text-gold fw-bold mb-3" style="letter-spacing: 5px;">INTERIOR ARCHITECTURE</h6>
+                    <h1 class="display-3 fw-bolder mb-4">築夢空間，<br><span class="text-dark">打造生活的溫度</span></h1>
+                    <p class="lead mb-5 text-muted col-lg-10">
+                        我是一名室內設計師，專注於現代極簡與人文溫度的結合。透過細膩的規劃，讓空間不再只是建築，而是情感的延伸與生活的容器。
+                    </p>
+                    <div class="d-flex gap-3">
+                        <a class="btn btn-primary btn-lg" href="#portfolio">瀏覽作品集</a>
+                        <a class="btn btn-outline-dark btn-lg px-4" href="#contact">開始諮詢</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 設計理念 -->
+    <section id="about" class="bg-white">
+        <div class="container">
+            <div class="row justify-content-between align-items-center">
+                <div class="col-lg-5 mb-5 mb-lg-0 reveal">
+                    <div class="position-relative">
+                        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=800&q=80" alt="設計理念圖" class="img-fluid shadow-lg">
+                        <div class="position-absolute bottom-0 end-0 bg-gold p-4 text-white d-none d-md-block shadow-lg" style="transform: translate(15%, 15%);">
+                            <h4 class="mb-0 fw-bold">10+</h4>
+                            <small>設計獎項榮譽</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 reveal">
+                    <h2 class="fw-bold mb-4">回歸純粹的設計哲學</h2>
+                    <p class="fs-5 text-muted mb-4 italic" style="border-left: 3px solid var(--gold-color); padding-left: 20px;">
+                        「好的設計不是增加，而是減少到無法再減少的程度。」
+                    </p>
+                    <p class="text-muted mb-4">
+                        我深信「光影」與「動線」是空間的靈魂。每一個案子都是一段故事的開始，我擅長傾聽居住者的需求，在機能與美學之間尋找最完美的平衡。自 2026 年起，我更加專注於永續建材的運用與智能家居的整合。
+                    </p>
+                    <div class="row g-4 mt-2">
+                        <div class="col-6">
+                            <h5 class="fw-bold text-gold">永續建材</h5>
+                            <p class="small text-muted">選用環保低甲醛材料，呵護家人健康。</p>
+                        </div>
+                        <div class="col-6">
+                            <h5 class="fw-bold text-gold">智能整合</h5>
+                            <p class="small text-muted">科技與美學並行，提升居住便利性。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 精選案例 -->
+    <section id="portfolio" class="bg-light">
+        <div class="container">
+            <div class="text-center mb-5 reveal">
+                <h6 class="text-gold fw-bold mb-2" style="letter-spacing: 3px;">SELECTED WORKS</h6>
+                <h2 class="fw-bold display-6">精選案例與榮譽</h2>
+                <div class="mx-auto bg-gold mt-3" style="width: 50px; height: 2px;"></div>
+            </div>
+            
+            <div class="row g-5">
+                <!-- 案例 1 -->
+                <div class="col-md-4 reveal">
+                    <div class="portfolio-card">
+                        <div class="portfolio-img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=800&q=80" alt="森之居">
+                            <div class="portfolio-overlay">
+                                <i class="bi bi-plus-lg text-white fs-1"></i>
+                            </div>
+                        </div>
+                        <h5 class="fw-bold mb-1">森之居 | 現代極簡別墅</h5>
+                        <p class="text-gold small mb-0">榮獲 2025 亞太室內設計金獎</p>
+                    </div>
+                </div>
+                <!-- 案例 2 -->
+                <div class="col-md-4 reveal">
+                    <div class="portfolio-card">
+                        <div class="portfolio-img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=800&q=80" alt="光影交織">
+                            <div class="portfolio-overlay">
+                                <i class="bi bi-plus-lg text-white fs-1"></i>
+                            </div>
+                        </div>
+                        <h5 class="fw-bold mb-1">光影交織 | 樓中樓住宅</h5>
+                        <p class="text-gold small mb-0">入圍 TIDA 台灣室內設計大獎</p>
+                    </div>
+                </div>
+                <!-- 案例 3 -->
+                <div class="col-md-4 reveal">
+                    <div class="portfolio-card">
+                        <div class="portfolio-img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80" alt="工業靈魂">
+                            <div class="portfolio-overlay">
+                                <i class="bi bi-plus-lg text-white fs-1"></i>
+                            </div>
+                        </div>
+                        <h5 class="fw-bold mb-1">工業靈魂 | 創意工作室</h5>
+                        <p class="text-gold small mb-0">受邀收錄於《空間美學》年鑑</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 專業能力 -->
+    <section id="skills" class="bg-dark-design text-white">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-5 mb-5 mb-lg-0 reveal">
+                    <h2 class="fw-bold mb-4 display-6">卓越的專業技術</h2>
+                    <p class="text-white-50 mb-5">我們不僅提供美學，更提供嚴謹的工程邏輯與全方位的規劃建議。</p>
+                    
+                    <div class="skill-item mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>空間格局規劃</span>
+                            <span class="text-gold">95%</span>
+                        </div>
+                        <div class="progress" style="height: 4px;">
+                            <div class="progress-bar bg-gold" style="width: 95%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-item mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>軟裝佈置美學</span>
+                            <span class="text-gold">90%</span>
+                        </div>
+                        <div class="progress" style="height: 4px;">
+                            <div class="progress-bar bg-gold" style="width: 90%"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>3D 模擬與數位建模</span>
+                            <span class="text-gold">85%</span>
+                        </div>
+                        <div class="progress" style="height: 4px;">
+                            <div class="progress-bar bg-gold" style="width: 85%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 offset-lg-1">
+                    <div class="row g-4 reveal">
+                        <div class="col-6">
+                            <div class="p-5 bg-white bg-opacity-10 border border-secondary rounded hover-lift text-center">
+                                <i class="bi bi-vector-pen text-gold fs-2"></i>
+                                <h6 class="mt-3 fw-bold">設計繪圖</h6>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-5 bg-white bg-opacity-10 border border-secondary rounded hover-lift text-center">
+                                <i class="bi bi-hammer text-gold fs-2"></i>
+                                <h6 class="mt-3 fw-bold">施工監造</h6>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-5 bg-white bg-opacity-10 border border-secondary rounded hover-lift text-center">
+                                <i class="bi bi-palette text-gold fs-2"></i>
+                                <h6 class="mt-3 fw-bold">色彩規劃</h6>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-5 bg-white bg-opacity-10 border border-secondary rounded hover-lift text-center">
+                                <i class="bi bi-box-seam text-gold fs-2"></i>
+                                <h6 class="mt-3 fw-bold">選材建議</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 聯絡諮詢 -->
+    <section id="contact">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center mb-5 reveal">
+                    <h2 class="fw-bold">開始您的空間之旅</h2>
+                    <p class="text-muted">留下您的聯繫資訊，我們將提供免費的 30 分鐘初步設計諮詢</p>
+                </div>
+            </div>
+            <div class="row g-5">
+                <div class="col-lg-5 reveal">
+                    <div class="mb-5">
+                        <h4 class="fw-bold mb-4">聯絡資訊</h4>
+                        <div class="d-flex align-items-start mb-4">
+                            <div class="text-gold fs-3 me-4"><i class="bi bi-geo-alt"></i></div>
+                            <div>
+                                <h6 class="fw-bold">工作室地址</h6>
+                                <p class="text-muted">台北市大安區敦化南路二段 88 號</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-start mb-4">
+                            <div class="text-gold fs-3 me-4"><i class="bi bi-envelope"></i></div>
+                            <div>
+                                <h6 class="fw-bold">電子郵件</h6>
+                                <p class="text-muted">info@design-studio-2026.com</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-start">
+                            <div class="text-gold fs-3 me-4"><i class="bi bi-instagram"></i></div>
+                            <div>
+                                <h6 class="fw-bold">Instagram</h6>
+                                <p class="text-muted">@design_life_official</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7 reveal">
+                    <form id="contactForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" placeholder="您的姓名 *" required>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="email" class="form-control" placeholder="您的 Email *" required>
+                            </div>
+                        </div>
+                        <input type="text" class="form-control" placeholder="案件類型 (例如：住宅裝修、商空設計)">
+                        <textarea class="form-control" rows="5" placeholder="請簡單描述您的空間需求與預算規劃..."></textarea>
+                        <button type="submit" class="btn btn-primary w-100 py-3">提交諮詢申請</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 頁尾 -->
+    <footer class="py-5 bg-dark-design text-white-50 border-top border-secondary border-opacity-25">
+        <div class="container text-center">
+            <h5 class="text-white fw-bold mb-4" style="letter-spacing: 5px;">DESIGN STUDIO</h5>
+            <div class="d-flex justify-content-center gap-4 mb-4 fs-4">
+                <a href="#" class="text-white-50"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="text-white-50"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="text-white-50"><i class="bi bi-pinterest"></i></a>
+            </div>
+            <p class="small mb-0">&copy; 2026 Design Studio Interior Design. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- 引入 Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // 導航欄滾動效果
+        window.addEventListener('scroll', function() {
+            const nav = document.getElementById('mainNav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled', 'shadow-sm');
+                nav.classList.remove('bg-transparent');
+            } else {
+                nav.classList.remove('scrolled', 'shadow-sm');
+                nav.classList.add('bg-transparent');
+            }
+        });
+
+        // 滾動顯示動畫 (Reveal on Scroll)
+        function reveal() {
+            const reveals = document.querySelectorAll(".reveal");
+            for (let i = 0; i < reveals.length; i++) {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveals[i].getBoundingClientRect().top;
+                const elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        // 初始執行一次確保首屏可見
+        reveal();
+
+        // 表單提交模擬
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = this.querySelector('button');
+            const originalText = btn.innerText;
+            btn.disabled = true;
+            btn.innerText = '發送中...';
+            
+            // 模擬網絡請求
+            setTimeout(() => {
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-success');
+                btn.innerText = '感謝您的諮詢！我們將儘快聯絡您。';
+                btn.style.backgroundColor = '#28a745';
+                btn.style.borderColor = '#28a745';
+            }, 1500);
+        });
+    </script>
+</body>
+</html>
